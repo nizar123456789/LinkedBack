@@ -1,7 +1,7 @@
 const Offer = require('../models/offerModel');
 const mongoose = require('mongoose');
 
-//get all workouts 
+//get all offers 
 const getOffers = async(req, res) => {
     const offers = await Offer.find({}).sort({ createdAt: -1 })
     res.status(200).json(offers)
@@ -9,7 +9,7 @@ const getOffers = async(req, res) => {
 
 
 
-//get a single workout
+//get a single offer
 const getOffer = async(req, res) => {
 
 
@@ -29,7 +29,7 @@ const getOffer = async(req, res) => {
     res.status(200).json(offer)
 }
 
-//create a single workout 
+//create a single offer 
 
 const createOffer = async(req, res) => {
 
@@ -66,7 +66,7 @@ const deleteOffer = async(req, res) => {
 }
 
 
-//update a workout
+//update a offer
 
 const updateOffer = async(req, res) => {
     const { id } = req.params
