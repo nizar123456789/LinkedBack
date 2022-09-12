@@ -13,20 +13,13 @@ const getAiProducts = async(req, res) => {
 const getAiProduct = async(req, res) => {
 
 
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
-    }
-    const product = await AiProduct.findById(id)
-
-    if (!product) {
-        res.status(404).json({ error: 'No such product' })
+    try {
+        const product = await AiProduct.findById(req.params.id);
+        res.status(200).json(product);
+    } catch (err) {
+        res.status(500).json(err);
     }
 
-    res.status(200).json(product)
 }
 
 //create a single offer 
@@ -47,41 +40,28 @@ const createAiProduct = async(req, res) => {
 
 //delete a offer 
 const deleteAiProduct = async(req, res) => {
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        await AiProduct.findByIdAndDelete(req.params.id);
+        res.status(200).json("Product has been deleted...");
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const product = await AiProduct.findOne({ _id: id })
-
-
-    if (!product) {
-        res.status(404).json({
-            error: 'No such product'
-        })
-    }
-    res.status(200).json(product)
 }
 
 
 //update a offer
 
 const updateAiProduct = async(req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        const updatedAiProduct = await AiProduct.findByIdAndUpdate(
+            req.params.id, {
+                $set: req.body,
+            }, { new: true }
+        );
+        res.status(200).json(updatedAiProduct);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const product = await AiProduct.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
-
-    if (!product) {
-        res.status(404).json({ error: 'No such product' })
-    }
-    res.status(200).json(product)
 
 }
 

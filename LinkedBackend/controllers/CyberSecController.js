@@ -13,20 +13,12 @@ const getCyberSecProducts = async(req, res) => {
 const getCyberSecProduct = async(req, res) => {
 
 
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        const CyberProduct = await CyberSecProduct.findById(req.params.id);
+        res.status(200).json(CyberProduct);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const CyberProduct = await CyberSecProduct.findById(id)
-
-    if (!CyberProduct) {
-        res.status(404).json({ error: 'No such product' })
-    }
-
-    res.status(200).json(CyberProduct)
 }
 
 //create a single offer 
@@ -47,41 +39,29 @@ const createCyberSecProduct = async(req, res) => {
 
 //delete a offer 
 const deleteCyberSecProduct = async(req, res) => {
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        await CyberSecProduct.findByIdAndDelete(req.params.id);
+        res.status(200).json("Product has been deleted...");
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const CyberProduct = await CyberSecProduct.findOne({ _id: id })
-
-
-    if (!CyberProduct) {
-        res.status(404).json({
-            error: 'No such product'
-        })
-    }
-    res.status(200).json(CyberProduct)
 }
 
 
 //update a offer
 
 const updateCyberSecProduct = async(req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        const updatedCyberSecProduct = await CyberSecProduct.findByIdAndUpdate(
+            req.params.id, {
+                $set: req.body,
+            }, { new: true }
+        );
+        res.status(200).json(updatedCyberSecProduct);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const CyberProduct = await CyberSecProduct.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
 
-    if (!CyberProduct) {
-        res.status(404).json({ error: 'No such product' })
-    }
-    res.status(200).json(CyberProduct)
 
 }
 

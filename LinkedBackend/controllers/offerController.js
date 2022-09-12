@@ -13,20 +13,12 @@ const getOffers = async(req, res) => {
 const getOffer = async(req, res) => {
 
 
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such Workout' })
+    try {
+        const offer = await Offer.findById(req.params.id);
+        res.status(200).json(offer);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const offer = await Offer.findById(id)
-
-    if (!offer) {
-        res.status(404).json({ error: 'No such Workout' })
-    }
-
-    res.status(200).json(offer)
 }
 
 //create a single offer 
@@ -47,41 +39,28 @@ const createOffer = async(req, res) => {
 
 //delete a workout 
 const deleteOffer = async(req, res) => {
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such Workout' })
+    try {
+        await Offer.findByIdAndDelete(req.params.id);
+        res.status(200).json("offer has been deleted...");
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const offer = await Offer.findOne({ _id: id })
-
-
-    if (!offer) {
-        res.status(404).json({
-            error: 'No such workout'
-        })
-    }
-    res.status(200).json(offer)
 }
 
 
 //update a offer
 
 const updateOffer = async(req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such Workout' })
+    try {
+        const updatedOffer = await Offer.findByIdAndUpdate(
+            req.params.id, {
+                $set: req.body,
+            }, { new: true }
+        );
+        res.status(200).json(updatedOffer);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const offer = await Offer.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
-
-    if (!offer) {
-        res.status(404).json({ error: 'No such workout' })
-    }
-    res.status(200).json(offer)
 
 }
 

@@ -3,8 +3,8 @@ const mongoose = require('mongoose');
 
 //get all offers 
 const getDevOpsProducts = async(req, res) => {
-    const DevOpsProducts = await DevOpsProduct.find({}).sort({ createdAt: -1 })
-    res.status(200).json(DevOpsProducts)
+    const DevopsProducts = await DevOpsProduct.find({}).sort({ createdAt: -1 })
+    res.status(200).json(DevopsProducts)
 }
 
 
@@ -13,20 +13,12 @@ const getDevOpsProducts = async(req, res) => {
 const getDevOpsProduct = async(req, res) => {
 
 
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        const DevopsProduct = await DevOpsProduct.findById(req.params.id);
+        res.status(200).json(DevopsProduct);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const DevOpsProduct = await DevOpsProduct.findById(id)
-
-    if (!DevOpsProduct) {
-        res.status(404).json({ error: 'No such product' })
-    }
-
-    res.status(200).json(DevOpsProduct)
 }
 
 //create a single offer 
@@ -37,8 +29,8 @@ const createDevOpsProduct = async(req, res) => {
     const { title, Company, location, date, tasks, requirements, applied, Type, aboutCompany } = req.body
         // add doc to db
     try {
-        const DevOpsProduct = await DevOpsProduct.create({ title, Company, location, date, tasks, requirements, applied, Type, aboutCompany })
-        res.status(200).json(DevOpsProduct)
+        const DevopsProduct = await DevOpsProduct.create({ title, Company, location, date, tasks, requirements, applied, Type, aboutCompany })
+        res.status(200).json(DevopsProduct)
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -47,41 +39,28 @@ const createDevOpsProduct = async(req, res) => {
 
 //delete a offer 
 const deleteDevOpsProduct = async(req, res) => {
-    const { id } = req.params
-
-
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        await DevOpsProduct.findByIdAndDelete(req.params.id);
+        res.status(200).json("Product has been deleted...");
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const DevOpsProduct = await DevOpsProduct.findOne({ _id: id })
-
-
-    if (!DevOpsProduct) {
-        res.status(404).json({
-            error: 'No such product'
-        })
-    }
-    res.status(200).json(DevOpsProduct)
 }
 
 
 //update a offer
 
 const updateDevOpsProduct = async(req, res) => {
-    const { id } = req.params
-    if (!mongoose.Types.ObjectId.isValid()) {
-
-        res.status(404).json({ error: 'NO Such product' })
+    try {
+        const updatedDevOpsProduct = await DevOpsProduct.findByIdAndUpdate(
+            req.params.id, {
+                $set: req.body,
+            }, { new: true }
+        );
+        res.status(200).json(updatedDevOpsProduct);
+    } catch (err) {
+        res.status(500).json(err);
     }
-    const DevOpsProduct = await DevOpsProduct.findOneAndUpdate({ _id: id }, {
-        ...req.body
-    })
-
-    if (!DevOpsProduct) {
-        res.status(404).json({ error: 'No such product' })
-    }
-    res.status(200).json(DevOpsProduct)
 
 }
 
