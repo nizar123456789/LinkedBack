@@ -5,13 +5,16 @@ const AiproductRoutes = require('./routes/Aiproducts');
 const CyberSecRoutes = require('./routes/CyberSecproduct');
 const DevOpsRoutes = require('./routes/DevOpsproduct');
 const WebRoutes = require('./routes/Webproduct');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
+const userRoutes = require('./routes/userRoutes');
+
+const { errorHandler, notFound } = require("./middleware/errorMiddleware");
 
 require('dotenv').config();
 
 
 
-const jwt = require('jsonwebtoken');
+//const jwt = require('jsonwebtoken');
 
 const dbURI = 'mongodb+srv://nizarkarkar:test1234@mernstack.utxuidk.mongodb.net/?retryWrites=true&w=majority'
     // express app
@@ -34,7 +37,11 @@ app.use('/api/CyberSec', CyberSecRoutes);
 app.use('/api/devops', DevOpsRoutes)
 
 app.use('/api/web', WebRoutes);
-app.use("/auth", require("./routes/userRouter"));
+app.use("/api/users", userRoutes);
+//error  middelware
+
+app.use(notFound);
+app.use(errorHandler);
 
 // connect to db
 mongoose.connect(dbURI)
