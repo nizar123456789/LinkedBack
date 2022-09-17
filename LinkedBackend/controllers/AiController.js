@@ -27,10 +27,10 @@ const getAiProduct = async(req, res) => {
 const createAiProduct = async(req, res) => {
 
 
-    const { title, Company, location, date, tasks, requirements, applied, Type, aboutCompany } = req.body
+    const { title, category, body } = req.body
         // add doc to db
     try {
-        const product = await AiProduct.create({ title, Company, location, date, tasks, requirements, applied, Type, aboutCompany })
+        const product = await AiProduct.create({ title, category, body })
         res.status(200).json(product)
     } catch (error) {
         res.status(400).json({ error: error.message })

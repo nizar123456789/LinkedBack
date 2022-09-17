@@ -26,10 +26,10 @@ const getOffer = async(req, res) => {
 const createOffer = async(req, res) => {
 
 
-    const { title, category, body } = req.body
+    const { title, Company, location, date, tasks, requirements, applied, Type, aboutCompany } = req.body
         // add doc to db
     try {
-        const offer = await Offer.create({ title, category, body })
+        const offer = await Offer.create({ title, Company, location, date, tasks, requirements, applied, Type, aboutCompany })
         res.status(200).json(offer)
     } catch (error) {
         res.status(400).json({ error: error.message })

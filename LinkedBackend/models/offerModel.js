@@ -7,13 +7,38 @@ const offerSchema = new Schema({
         type: String,
         required: true
     },
-    category: {
+    Company: {
         type: String,
         required: true
     },
-    body: {
+    location: {
         type: String,
         required: true
+    },
+
+    date: {
+        type: String,
+        required: true
+    },
+    tasks: {
+        type: [String],
+        required: true
+    },
+    requirements: {
+        type: [String],
+        required: true
+    },
+    applied: {
+        type: Number,
+        required: true
+    },
+    Type: {
+        type: String,
+        require: true
+    },
+    aboutCompany: {
+        type: String,
+        require: true
     }
 }, { timestamps: true })
 

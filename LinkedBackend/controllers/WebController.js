@@ -26,10 +26,10 @@ const getWebProduct = async(req, res) => {
 const createWebProduct = async(req, res) => {
 
 
-    const { title, Company, location, date, tasks, requirements, applied, Type, aboutCompany } = req.body
+    const { title, category, body } = req.body
         // add doc to db
     try {
-        const Webproduct = await WebProduct.create({ title, Company, location, date, tasks, requirements, applied, Type, aboutCompany })
+        const Webproduct = await WebProduct.create({ title, category, body })
         res.status(200).json(Webproduct)
     } catch (error) {
         res.status(400).json({ error: error.message })

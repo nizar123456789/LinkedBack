@@ -50,7 +50,7 @@ mongoose.connect(dbURI)
     .then(() => {
         console.log('connected to database')
             // listen to port
-        app.listen(3000, () => {
+        app.listen(5000, () => {
             console.log('listening for requests on port 3000')
         })
     })
